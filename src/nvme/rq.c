@@ -151,7 +151,7 @@ int nvme_rq_mapv_prp(struct nvme_ctrl *ctrl, struct nvme_rq *rq, union nvme_cmd 
 
 	/* map remaining iovec entries; these must be page size aligned */
 	for (int i = 1; i < niov; i++) {
-		iova = (uint64_t)iov[i].iov_base;
+		iova = ALIGN_UP((uint64_t)iov[i].iov_base, pagesize);
 		len = iov[i].iov_len;
 
 		_prpcount = max_t(int, 1, (int)len >> pageshift);
